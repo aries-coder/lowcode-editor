@@ -3,7 +3,7 @@ import LowcodeEditor from '@/LowcodeEditor/index.vue'
 </script>
 
 <template>
-  <div>
+  <div class="w-full h-full">
     <lowcode-editor />
   </div>
 </template>

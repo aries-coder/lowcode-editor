@@ -1,0 +1,30 @@
+<script setup lang="ts">
+defineOptions({ name: 'LowcodeContainer' })
+
+import { useMaterialDrop } from '@/LowcodeEditor/hooks/useMaterialDrop'
+import type { CommonComponentProps } from '@/LowcodeEditor/interface'
+
+const { id } = defineProps<CommonComponentProps>()
+
+const { isHover, drop } = useMaterialDrop(
+  ['Button', 'Container'],
+  id
+)
+</script>
+
+<template>
+  <div
+    :ref="drop"
+    class="min-h-[150px] p-[20px]"
+    :style="{
+      border:
+        isHover ?
+          '2px solid blue'
+        : '1px solid #000'
+    }"
+  >
+    <slot></slot>
+  </div>
+</template>
+
+<style scoped></style>

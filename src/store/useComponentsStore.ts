@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { reactive } from 'vue'
 
-interface Component {
+export interface Component {
   id: number
   name: string
   props?: Record<string, unknown>
@@ -15,9 +15,23 @@ export const useComponentsStore = defineStore(
     const components = reactive<Component[]>([
       {
         id: 111,
-        name: 'page',
+        name: 'Page',
         props: {},
-        children: []
+        children: [
+          {
+            id: 222,
+            name: 'Container',
+            children: [
+              {
+                id: 333,
+                name: 'Button',
+                props: {
+                  text: '草泥马mmmmmm'
+                }
+              }
+            ]
+          }
+        ]
       }
     ])
 

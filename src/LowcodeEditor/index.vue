@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
-import Materials from './components/Materials.vue'
-import EditAre from './components/EditAre.vue'
-import Setting from './components/Setting.vue'
+import Materials from './components/Materials/index.vue'
+import EditAre from './components/EditAre'
+import Setting from './components/Setting/index.vue'
 
 defineOptions({
   name: 'LowcodeEditorIndex'

@@ -13,7 +13,8 @@ const { isHover, drop } = useMaterialDrop(
 
 <template>
   <div
-    class="p-5 h-full box-border"
+    :data-component-id="id"
+    class="p-6 h-full box-border"
     :style="{
       border: isHover ? '2px solid blue' : ''
     }"

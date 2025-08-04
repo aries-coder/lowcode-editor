@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { CommonComponentProps } from '@/LowcodeEditor/interface'
 import {
   NButton,
   type ButtonProps as NButtonProps
@@ -14,11 +15,15 @@ defineOptions({
   name: 'LowcodeButton'
 })
 
-const props = defineProps<ButtonProps>()
+const { text, type, id } = defineProps<
+  ButtonProps & CommonComponentProps
+>()
 </script>
 
 <template>
-  <NButton :type="type">{{ props.text }}</NButton>
+  <NButton :data-component-id="id" :type="type">{{
+    text
+  }}</NButton>
 </template>
 
 <style scoped></style>

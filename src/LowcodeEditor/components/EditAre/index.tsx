@@ -4,7 +4,8 @@ import {
 } from '@/store/useComponentsStore'
 import { useComponentsConfigStore } from '@/store/useComponentsConfigStore'
 import { storeToRefs } from 'pinia'
-import { h, defineComponent } from 'vue'
+import { h, defineComponent, ref } from 'vue'
+import HoverMask from './HoverMask.vue'
 
 export default defineComponent({
   name: 'EditAre',
@@ -20,12 +21,14 @@ export default defineComponent({
       componentsStore
     )
 
+    const hoverComponentId = ref<number | null>(
+      null
+    )
+
     function renderComponents(
       components: Component[]
     ): ReturnType<typeof h>[] {
       return components.map(component => {
-        console.log(component.name)
-
         const config =
           componentsConfig.value[component.name]
 
@@ -54,7 +57,38 @@ export default defineComponent({
       })
     }
 
-    return () =>
-      renderComponents(components.value)
+    function handleMouseOver(event: MouseEvent) {
+      const target = (
+        event.target as HTMLElement
+      ).closest('[data-component-id]')
+
+      if (target) {
+        const componentId = target.getAttribute(
+          'data-component-id'
+        )
+        if (componentId) {
+          hoverComponentId.value =
+            Number(componentId)
+        }
+      }
+    }
+
+    return () => (
+      <div
+        class="h-full edit-are relative"
+        onMouseover={handleMouseOver}
+        onMouseleave={() =>
+          (hoverComponentId.value = null)
+        }
+      >
+        {renderComponents(components.value)}
+        {hoverComponentId.value && (
+          <HoverMask
+            id={hoverComponentId.value}
+            containerClassName="edit-are"
+          />
+        )}
+      </div>
+    )
   }
 })

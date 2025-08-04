@@ -14,8 +14,9 @@ const { isHover, drop } = useMaterialDrop(
 
 <template>
   <div
+    :data-component-id="id"
     :ref="drop"
-    class="min-h-[150px] p-[20px]"
+    class="min-h-[150px] p-6"
     :style="{
       border:
         isHover ?

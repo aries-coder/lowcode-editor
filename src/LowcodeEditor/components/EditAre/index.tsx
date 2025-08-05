@@ -6,6 +6,7 @@ import { useComponentsConfigStore } from '@/store/useComponentsConfigStore'
 import { storeToRefs } from 'pinia'
 import { h, defineComponent, ref } from 'vue'
 import HoverMask from './HoverMask.vue'
+import SelectMask from './SelectMask.vue'
 
 export default defineComponent({
   name: 'EditAre',
@@ -17,9 +18,8 @@ export default defineComponent({
     const { componentsConfig } = storeToRefs(
       componentsConfigStore
     )
-    const { components } = storeToRefs(
-      componentsStore
-    )
+    const { components, currentComponentId } =
+      storeToRefs(componentsStore)
 
     const hoverComponentId = ref<number | null>(
       null
@@ -72,6 +72,22 @@ export default defineComponent({
         }
       }
     }
+    function handleMouseClick(event: MouseEvent) {
+      const target = (
+        event.target as HTMLElement
+      ).closest('[data-component-id]')
+
+      if (target) {
+        const componentId = target.getAttribute(
+          'data-component-id'
+        )
+        if (componentId) {
+          componentsStore.setCurrentComponentId(
+            Number(componentId)
+          )
+        }
+      }
+    }
 
     return () => (
       <div
@@ -80,11 +96,20 @@ export default defineComponent({
         onMouseleave={() =>
           (hoverComponentId.value = null)
         }
+        onClick={handleMouseClick}
       >
         {renderComponents(components.value)}
-        {hoverComponentId.value && (
-          <HoverMask
-            id={hoverComponentId.value}
+        {hoverComponentId.value &&
+          hoverComponentId.value !==
+            currentComponentId.value && (
+            <HoverMask
+              id={hoverComponentId.value}
+              containerClassName="edit-are"
+            />
+          )}
+        {currentComponentId.value && (
+          <SelectMask
+            id={currentComponentId.value}
             containerClassName="edit-are"
           />
         )}

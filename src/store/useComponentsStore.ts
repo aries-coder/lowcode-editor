@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 export interface Component {
   id: number
@@ -21,19 +21,26 @@ export const useComponentsStore = defineStore(
           {
             id: 222,
             name: 'Container',
+            parentId: 111,
             children: [
               {
                 id: 333,
                 name: 'Button',
                 props: {
                   text: '草泥马mmmmmm'
-                }
+                },
+                parentId: 222
               }
             ]
           }
         ]
       }
     ])
+    const currentComponentId = ref<number | null>(
+      null
+    )
+    const currentComponent =
+      ref<Component | null>(null)
 
     const addComponent = (
       compontnt: Component,
@@ -58,6 +65,7 @@ export const useComponentsStore = defineStore(
         id,
         components
       )
+
       if (component?.parentId) {
         const parentComponent = getComponenById(
           component.parentId,
@@ -92,10 +100,21 @@ export const useComponentsStore = defineStore(
       }
     }
 
+    const setCurrentComponentId = (
+      id: number | null
+    ) => {
+      currentComponentId.value = id
+      currentComponent.value = getComponenById(
+        id,
+        components
+      )
+    }
+
     function getComponenById(
-      id: number,
+      id: number | null,
       components: Component[]
     ): Component | null {
+      if (!id) return null
       for (const component of components) {
         if (component.id === id) return component
         if (
@@ -116,9 +135,13 @@ export const useComponentsStore = defineStore(
 
     return {
       components,
+      currentComponent,
+      currentComponentId,
+      setCurrentComponentId,
       addComponent,
       deleteComponent,
-      updateComponent
+      updateComponent,
+      getComponenById
     }
   }
 )

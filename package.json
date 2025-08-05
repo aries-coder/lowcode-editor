@@ -11,6 +11,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@types/splitpanes": "^2.2.6",
+    "mitt": "^3.0.1",
     "pinia": "^3.0.3",
     "react-dnd-html5-backend": "^16.0.1",
     "splitpanes": "^4.0.4",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@types/node": "^24.1.0",
+    "@vicons/fluent": "^0.13.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitejs/plugin-vue-jsx": "^5.0.1",
     "@vue/tsconfig": "^0.7.0",

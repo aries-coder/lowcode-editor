@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { useComponentsStore } from '@/store/useComponentsStore'
+import { storeToRefs } from 'pinia'
+import { computed, ref, watch } from 'vue'
 
 interface HoverMaskProps {
   id: number
@@ -15,6 +17,14 @@ const position = ref({
   labelLeft: 0,
   labelTop: 0
 })
+const componentStore = useComponentsStore()
+const { components } = storeToRefs(componentStore)
+const currentComponent = computed(() =>
+  componentStore.getComponenById(
+    id,
+    components.value
+  )
+)
 
 function updatePosition() {
   if (!id) return
@@ -92,7 +102,7 @@ watch(
       whiteSpace: 'nowrap'
     }"
   >
-    哈哈
+    {{ currentComponent?.name }}
   </div>
 </template>
 

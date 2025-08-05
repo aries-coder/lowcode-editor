@@ -5,16 +5,24 @@ import Materials from './components/Materials/index.vue'
 import EditAre from './components/EditAre'
 import Setting from './components/Setting/index.vue'
 import EditorHeader from './components/Header/index.vue'
+import { emitter } from '@/utils'
 
 defineOptions({
   name: 'LowcodeEditorIndex'
 })
+
+function handleSplipanesResized() {
+  emitter.emit('pane-resized')
+}
 </script>
 
 <template>
   <div class="h-full">
     <EditorHeader />
-    <Splitpanes class="default-theme">
+    <Splitpanes
+      class="default-theme"
+      @resized="handleSplipanesResized"
+    >
       <Pane min-size="20" max-size="30" size="25">
         <Materials />
       </Pane>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineOptions({ name: 'LowcodeContainer' })
 
-import { useMaterialDrop } from '@/LowcodeEditor/hooks/useMaterialDrop'
+import { useMaterialDrop } from '@/hooks/useMaterialDrop'
 import type { CommonComponentProps } from '@/LowcodeEditor/interface'
 
 const { id } = defineProps<CommonComponentProps>()

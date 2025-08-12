@@ -1,12 +1,17 @@
 import { defineStore } from 'pinia'
-import { reactive, ref } from 'vue'
+import {
+  reactive,
+  ref,
+  type CSSProperties
+} from 'vue'
 
 export interface Component {
   id: number
   name: string
-  props?: Record<string, unknown>
+  props?: Record<string, any>
   children?: Component[]
   parentId?: number
+  styles?: CSSProperties
 }
 
 export const useComponentsStore = defineStore(
@@ -22,6 +27,10 @@ export const useComponentsStore = defineStore(
             id: 222,
             name: 'Container',
             parentId: 111,
+            styles: {
+              backgroundColor: 'red',
+              height: '300px'
+            },
             children: [
               {
                 id: 333,
@@ -84,7 +93,7 @@ export const useComponentsStore = defineStore(
       }
     }
 
-    const updateComponent = (
+    const updateComponentProps = (
       props: Component['props'],
       id: number
     ) => {
@@ -108,6 +117,27 @@ export const useComponentsStore = defineStore(
         id,
         components
       )
+    }
+
+    const updateComponentStyles = (
+      styles: Component['styles'],
+      id: number,
+      replace: boolean = false
+    ) => {
+      const component = getComponenById(
+        id,
+        components
+      )
+      if (component) {
+        if (replace) {
+          component.styles = styles
+        } else {
+          component.styles = {
+            ...component.styles,
+            ...styles
+          }
+        }
+      }
     }
 
     function getComponenById(
@@ -140,8 +170,9 @@ export const useComponentsStore = defineStore(
       setCurrentComponentId,
       addComponent,
       deleteComponent,
-      updateComponent,
-      getComponenById
+      updateComponentProps,
+      getComponenById,
+      updateComponentStyles
     }
   }
 )

@@ -15,15 +15,18 @@ defineOptions({
   name: 'LowcodeButton'
 })
 
-const { text, type, id } = defineProps<
+const { text, type, id, styles } = defineProps<
   ButtonProps & CommonComponentProps
 >()
 </script>
 
 <template>
-  <NButton :data-component-id="id" :type="type">{{
-    text
-  }}</NButton>
+  <NButton
+    :data-component-id="id"
+    :type="type"
+    :style="styles"
+    >{{ text }}</NButton
+  >
 </template>
 
 <style scoped></style>

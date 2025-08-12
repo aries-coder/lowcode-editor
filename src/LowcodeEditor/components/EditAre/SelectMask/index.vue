@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'SelectMask'
+})
+
 import { useComponentsStore } from '@/store/useComponentsStore'
 import { storeToRefs } from 'pinia'
 import {

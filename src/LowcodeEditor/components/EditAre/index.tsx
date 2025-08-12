@@ -5,8 +5,8 @@ import {
 import { useComponentsConfigStore } from '@/store/useComponentsConfigStore'
 import { storeToRefs } from 'pinia'
 import { h, defineComponent, ref } from 'vue'
-import HoverMask from './HoverMask.vue'
-import SelectMask from './SelectMask.vue'
+import HoverMask from './HoverMask/index.vue'
+import SelectMask from './SelectMask/index.vue'
 
 export default defineComponent({
   name: 'EditAre',
@@ -49,6 +49,7 @@ export default defineComponent({
           {
             id: component.id,
             name: component.name,
+            styles: component.styles || {},
             ...config.defaultProps,
             ...component.props
           },

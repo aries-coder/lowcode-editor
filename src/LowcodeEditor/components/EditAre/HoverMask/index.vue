@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineOptions({
+  name: 'HoverMask'
+})
+
 import { useComponentsStore } from '@/store/useComponentsStore'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'

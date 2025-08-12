@@ -20,9 +20,14 @@ export default defineConfig([
   tseslint.configs.recommended,
   pluginVue.configs['flat/essential'],
   {
-    files: ['**/*.vue'],
+    files: ['**/*.vue', '**/*.tsx'],
     languageOptions: {
       parserOptions: { parser: tseslint.parser }
+    }
+  }
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off'
     }
   }
 ])

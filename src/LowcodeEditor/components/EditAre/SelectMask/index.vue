@@ -174,7 +174,7 @@ onMounted(() => {
           cursor: 'pointer'
         }"
       >
-        {{ currentComponent?.name }}
+        {{ currentComponent?.desc }}
       </div>
     </n-dropdown>
     <template

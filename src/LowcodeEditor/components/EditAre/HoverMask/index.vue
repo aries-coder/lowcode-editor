@@ -106,7 +106,7 @@ watch(
       whiteSpace: 'nowrap'
     }"
   >
-    {{ currentComponent?.name }}
+    {{ currentComponent?.desc }}
   </div>
 </template>
 

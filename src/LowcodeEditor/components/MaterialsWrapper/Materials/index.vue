@@ -24,7 +24,10 @@ const components = computed(() =>
       v-for="item in components"
       :key="item.name"
     >
-      <materials-item :name="item.name" />
+      <materials-item
+        :name="item.name"
+        :desc="item.desc"
+      />
     </template>
   </div>
 </template>

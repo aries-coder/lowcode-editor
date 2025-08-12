@@ -21,14 +21,15 @@ export function useMaterialDrop(
       const didDrop = monitor.didDrop()
       if (didDrop) return
 
-      const defaultProps =
+      const config =
         componentsConfig.value[item.type]
-          .defaultProps || {}
+
       componentsStore.addComponent(
         {
           id: Date.now(),
           name: item.type,
-          props: defaultProps
+          props: config.defaultProps,
+          desc: config.desc
         },
         id
       )

@@ -12,6 +12,7 @@ export interface Component {
   children?: Component[]
   parentId?: number
   styles?: CSSProperties
+  desc?: string
 }
 
 export const useComponentsStore = defineStore(
@@ -22,6 +23,7 @@ export const useComponentsStore = defineStore(
         id: 111,
         name: 'Page',
         props: {},
+        desc: '页面',
         children: [
           {
             id: 222,
@@ -31,6 +33,7 @@ export const useComponentsStore = defineStore(
               backgroundColor: 'red',
               height: '300px'
             },
+            desc: '容器',
             children: [
               {
                 id: 333,
@@ -38,6 +41,7 @@ export const useComponentsStore = defineStore(
                 props: {
                   text: '草泥马mmmmmm'
                 },
+                desc: '按钮',
                 parentId: 222
               }
             ]
@@ -50,6 +54,7 @@ export const useComponentsStore = defineStore(
     )
     const currentComponent =
       ref<Component | null>(null)
+    const mode = ref<'dev' | 'pro'>('dev')
 
     const addComponent = (
       compontnt: Component,
@@ -140,6 +145,10 @@ export const useComponentsStore = defineStore(
       }
     }
 
+    const setMode = (type: 'dev' | 'pro') => {
+      mode.value = type
+    }
+
     function getComponenById(
       id: number | null,
       components: Component[]
@@ -164,6 +173,7 @@ export const useComponentsStore = defineStore(
     }
 
     return {
+      mode,
       components,
       currentComponent,
       currentComponentId,
@@ -172,7 +182,8 @@ export const useComponentsStore = defineStore(
       deleteComponent,
       updateComponentProps,
       getComponenById,
-      updateComponentStyles
+      updateComponentStyles,
+      setMode
     }
   }
 )

@@ -4,9 +4,14 @@ import {
   reactive,
   type Component
 } from 'vue'
-import Container from '@/LowcodeEditor/components/Materials/Container/index.vue'
-import Button from '@/LowcodeEditor/components/Materials/Button/index.vue'
-import Page from '@/LowcodeEditor/components/Materials/Page/index.vue'
+
+import ContainerDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Container/ContainerDev.vue'
+import ButtonDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Button/ButtonDev.vue'
+import PageDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Page/PageDev.vue'
+
+import ContainerPro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Container/ContainerPro.vue'
+import ButtonPro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Button/ButtonPro.vue'
+import PagePro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Page/PagePro.vue'
 
 export interface ComponentSetter {
   name: string
@@ -17,9 +22,11 @@ export interface ComponentSetter {
 export interface ComponentConfig {
   name: string
   defaultProps: Record<string, unknown>
-  component: Component
+  dev: Component
+  pro: Component
   setters?: ComponentSetter[]
   stylesSetters?: ComponentSetter[]
+  desc: string
 }
 type ComponentsConfig = {
   [key: string]: ComponentConfig
@@ -32,12 +39,16 @@ export const useComponentsConfigStore =
         Page: {
           name: 'Page',
           defaultProps: {},
-          component: markRaw(Page)
+          dev: markRaw(PageDev),
+          pro: markRaw(PagePro),
+          desc: '页面'
         },
         Container: {
           name: 'Container',
           defaultProps: {},
-          component: markRaw(Container)
+          dev: markRaw(ContainerDev),
+          pro: markRaw(ContainerPro),
+          desc: '容器'
         },
         Button: {
           name: 'Button',
@@ -45,6 +56,9 @@ export const useComponentsConfigStore =
             type: 'primary',
             text: '按钮'
           },
+          dev: markRaw(ButtonDev),
+          pro: markRaw(ButtonPro),
+          desc: '按钮',
           setters: [
             {
               name: 'type',
@@ -82,8 +96,7 @@ export const useComponentsConfigStore =
               label: '高度',
               type: 'inputNumber'
             }
-          ],
-          component: markRaw(Button)
+          ]
         }
       })
 

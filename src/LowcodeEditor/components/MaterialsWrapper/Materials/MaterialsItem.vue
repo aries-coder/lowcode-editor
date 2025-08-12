@@ -4,8 +4,9 @@ import { useDrag } from 'vue3-dnd'
 defineOptions({
   name: 'MaterialsItem'
 })
-const { name } = defineProps<{
-  name: string
+const { name, desc } = defineProps<{
+  name: string,
+  desc: string
 }>()
 
 const [, drag] = useDrag(() => ({
@@ -21,7 +22,7 @@ const [, drag] = useDrag(() => ({
     :ref="drag"
     class="border-1 border-dashed p-3 m-2 cursor-move select-none"
   >
-    {{ name }}
+    {{ desc }}
   </div>
 </template>
 

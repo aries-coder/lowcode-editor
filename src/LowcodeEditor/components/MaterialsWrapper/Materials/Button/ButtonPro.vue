@@ -12,21 +12,18 @@ interface ButtonProps {
 }
 
 defineOptions({
-  name: 'LowcodeButton'
+  name: 'LowcodeButtonPro'
 })
 
-const { text, type, id, styles } = defineProps<
+const { text, type, styles } = defineProps<
   ButtonProps & CommonComponentProps
 >()
 </script>
 
 <template>
-  <NButton
-    :data-component-id="id"
-    :type="type"
-    :style="styles"
-    >{{ text }}</NButton
-  >
+  <NButton :type="type" :style="styles">{{
+    text
+  }}</NButton>
 </template>
 
 <style scoped></style>

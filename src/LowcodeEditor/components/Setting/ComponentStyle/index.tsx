@@ -163,7 +163,7 @@ export default defineComponent({
       if (!currentComponent.value) return null
 
       return (
-        <div class="p-1">
+        <div class="p-1 h-full">
           <NForm
             label-placement="left"
             label-width="auto"

@@ -120,6 +120,14 @@ export default defineComponent({
                 }
               />
             </NFormItem>
+             <NFormItem label="组件描述">
+              <NInput
+                disabled
+                value={
+                  currentComponent.value?.desc
+                }
+              />
+            </NFormItem>
             {componentsConfig.value[
               currentComponent.value!.name
             ].setters?.map(setter => {

@@ -32,7 +32,7 @@ export default defineComponent({
         const config =
           componentsConfig.value[component.name]
 
-        if (!config.component) return h('div')
+        if (!config.dev) return h('div')
 
         const children =
           component.children?.length ?
@@ -45,7 +45,7 @@ export default defineComponent({
           : undefined
 
         return h(
-          config.component,
+          config.dev,
           {
             id: component.id,
             name: component.name,

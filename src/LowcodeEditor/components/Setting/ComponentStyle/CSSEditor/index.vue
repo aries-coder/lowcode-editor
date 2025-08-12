@@ -48,7 +48,7 @@ watch(
 </script>
 
 <template>
-  <div ref="editorRef" class="h-[400px]"></div>
+  <div ref="editorRef" class="h-full"></div>
 </template>
 
 <style scoped></style>

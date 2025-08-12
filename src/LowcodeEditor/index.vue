@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
-import Materials from './components/Materials/index.vue'
+import MaterialsWrapper from './components/MaterialsWrapper/index.vue'
 import EditAre from './components/EditAre'
 import Setting from './components/Setting/index.vue'
 import EditorHeader from './components/Header/index.vue'
+import Preview from './components/Preview/'
 import { emitter } from '@/utils'
+import { useComponentsStore } from '@/store/useComponentsStore'
+import { storeToRefs } from 'pinia'
+const componentsStore = useComponentsStore()
+const { mode } = storeToRefs(componentsStore)
 
 defineOptions({
   name: 'LowcodeEditorIndex'
@@ -19,20 +24,33 @@ function handleSplipanesResized() {
 <template>
   <div class="h-full">
     <EditorHeader />
-    <Splitpanes
-      class="default-theme"
-      @resized="handleSplipanesResized"
-    >
-      <Pane min-size="20" max-size="30" size="25">
-        <Materials />
-      </Pane>
-      <Pane>
-        <EditAre />
-      </Pane>
-      <Pane min-size="25" max-size="30" size="25">
-        <Setting />
-      </Pane>
-    </Splitpanes>
+    <template v-if="mode === 'dev'">
+      <Splitpanes
+        class="default-theme"
+        @resized="handleSplipanesResized"
+      >
+        <Pane
+          min-size="20"
+          max-size="30"
+          size="25"
+        >
+          <MaterialsWrapper />
+        </Pane>
+        <Pane>
+          <EditAre />
+        </Pane>
+        <Pane
+          min-size="25"
+          max-size="30"
+          size="25"
+        >
+          <Setting />
+        </Pane>
+      </Splitpanes>
+    </template>
+    <template v-else>
+      <Preview />
+    </template>
   </div>
 </template>
 

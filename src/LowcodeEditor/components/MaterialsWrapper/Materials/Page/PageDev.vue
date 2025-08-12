@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineOptions({ name: 'LowcodePage' })
+defineOptions({ name: 'LowcodePageDev' })
 import { useMaterialDrop } from '@/hooks/useMaterialDrop'
 import type { CommonComponentProps } from '@/LowcodeEditor/interface'
 

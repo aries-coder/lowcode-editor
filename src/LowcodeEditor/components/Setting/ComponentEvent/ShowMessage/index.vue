@@ -1,27 +1,26 @@
 <script setup lang="ts">
 import { NSelect, NInput } from 'naive-ui'
-import { type ComponentEvent } from '@/store/useComponentsConfigStore'
-import { useComponentsStore } from '@/store/useComponentsStore'
-import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { reactive } from 'vue'
 
-const { name: eventName } =
-  defineProps<ComponentEvent>()
-const componentsStore = useComponentsStore()
-const { currentComponentId, currentComponent } =
-  storeToRefs(componentsStore)
+interface Config {
+  type: 'success' | 'error' | 'warning'
+  text: string
+}
 
-const eventProps = computed(
-  () =>
-    currentComponent.value?.props?.[
-      eventName
-    ]?.() || {}
-)
-const eventPropsConfig = computed(
-  () =>
-    currentComponent.value?.props?.[eventName]?.()
-      ?.config || {}
-)
+const { onChange } = defineProps<{
+  onChange: (config: Record<string, any>) => void
+}>()
+const config = reactive<Config>({
+  type: 'success',
+  text: '91绿毛龟'
+})
+
+function handleChangeAction() {
+  onChange({
+    type: 'showMessage',
+    config
+  })
+}
 
 const selectOptions = [
   {
@@ -37,42 +36,6 @@ const selectOptions = [
     value: 'warning'
   }
 ]
-
-function handleMessageType(type: string) {
-  const obj = {
-    ...eventProps.value,
-    config: {
-      ...eventPropsConfig.value,
-      type
-    }
-  }
-  componentsStore.updateComponentProps(
-    {
-      [eventName]: () => ({
-        ...obj
-      })
-    },
-    currentComponentId.value!
-  )
-}
-
-function handleMessageText(text: string) {
-  const obj = {
-    ...eventProps.value,
-    config: {
-      ...eventPropsConfig.value,
-      text
-    }
-  }
-  componentsStore.updateComponentProps(
-    {
-      [eventName]: () => ({
-        ...obj
-      })
-    },
-    currentComponentId.value!
-  )
-}
 </script>
 
 <template>
@@ -80,17 +43,24 @@ function handleMessageText(text: string) {
     <div class="flex items-center px-2">
       <div class="min-w-[50px]">类型：</div>
       <n-select
-        :key="`${currentComponentId}-${eventName}`"
         :options="selectOptions"
-        :value="eventPropsConfig?.type"
-        @update-value="handleMessageType"
+        @update-value="
+          (type: Config['type']) => {
+            config.type = type
+            handleChangeAction()
+          }
+        "
       />
     </div>
     <div class="flex items-center px-2">
       <div class="min-w-[50px]">文本：</div>
       <n-input
-        :value="eventPropsConfig?.text"
-        @input="handleMessageText"
+        @input="
+          (text: string) => {
+            config.text = text
+            handleChangeAction()
+          }
+        "
       />
     </div>
   </div>

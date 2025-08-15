@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { NTabs, NTabPane } from 'naive-ui'
+import {
+  NTabs,
+  NTabPane,
+  NModalProvider
+} from 'naive-ui'
 import ComponentAttr from './ComponentAttr'
 import ComponentEvent from './ComponentEvent/index.vue'
 import ComponentStyle from './ComponentStyle'
@@ -23,7 +27,9 @@ defineOptions({
         <ComponentStyle />
       </n-tab-pane>
       <n-tab-pane name="chap3" tab="事件">
-        <ComponentEvent />
+        <n-modal-provider>
+          <ComponentEvent />
+        </n-modal-provider>
       </n-tab-pane>
     </n-tabs>
   </div>

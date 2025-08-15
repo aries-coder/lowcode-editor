@@ -13,6 +13,10 @@ export interface Component {
   parentId?: number
   styles?: CSSProperties
   desc?: string
+  events?: Record<
+    string,
+    Array<Record<string, any>>
+  >
 }
 
 export const useComponentsStore = defineStore(
@@ -149,6 +153,23 @@ export const useComponentsStore = defineStore(
       mode.value = type
     }
 
+    const updateComponentEvents = (
+      event: Record<string, any>,
+      id: number
+    ) => {
+      const component = getComponenById(
+        id,
+        components
+      )
+
+      if (component) {
+        component.events = {
+          ...component.events,
+          ...event
+        }
+      }
+    }
+
     function getComponenById(
       id: number | null,
       components: Component[]
@@ -183,7 +204,8 @@ export const useComponentsStore = defineStore(
       updateComponentProps,
       getComponenById,
       updateComponentStyles,
-      setMode
+      setMode,
+      updateComponentEvents
     }
   }
 )

@@ -8,11 +8,13 @@ import { useComponentsStore } from '@/store/useComponentsStore'
 import {
   NCollapse,
   NCollapseItem,
-  NSelect
+  NButton,
+  NCard,
+  NTag
 } from 'naive-ui'
 import { storeToRefs } from 'pinia'
-import GoToLink from './GoToLink/index.vue'
-import ShowMessage from './ShowMessage/index.vue'
+import ActionModal from './ActionModal/index.vue'
+import { ref } from 'vue'
 
 const componentsConfigStore =
   useComponentsConfigStore()
@@ -23,35 +25,36 @@ const { componentsConfig } = storeToRefs(
 const { currentComponent, currentComponentId } =
   storeToRefs(componentsStore)
 
-const selectOptions = [
-  {
-    label: '跳转链接',
-    value: 'goToLink'
-  },
-  {
-    label: '显示信息',
-    value: 'showMessage'
-  }
-]
+const isShow = ref<boolean>(false)
+const curEventName = ref<string>('')
 
-function handleUpdateSelectValue(
-  eventName: string,
-  type: string
-) {
-  componentsStore.updateComponentProps(
-    {
-      [eventName]: () => ({ type })
-    },
-    currentComponentId.value!
+function getEventsByEventName(eventName: string) {
+  return (
+    currentComponent.value?.events?.[eventName] ||
+    []
   )
 }
 
-const getSelectValue = (propName: string) => {
-  const prop =
-    currentComponent.value?.props?.[propName]
-  return typeof prop === 'function' ? prop() : (
-      null
-    )
+function handleShowModal(key: boolean) {
+  isShow.value = key
+}
+
+function handleAddAction(
+  action: Record<string, any>
+) {
+  handleShowModal(false)
+
+  componentsStore.updateComponentEvents(
+    {
+      [curEventName.value]: [
+        ...getEventsByEventName(
+          curEventName.value
+        ),
+        action
+      ]
+    },
+    currentComponentId.value!
+  )
 }
 </script>
 
@@ -68,42 +71,78 @@ const getSelectValue = (propName: string) => {
           :title="item.label"
           :name="item.name"
         >
-          <div class="flex items-center px-2">
-            <div class="min-w-[50px]">动作：</div>
-            <n-select
-              :options="selectOptions"
-              :value="
-                getSelectValue(item.name)?.type
-              "
-              @update-value="
-                (type: string) =>
-                  handleUpdateSelectValue(
-                    item.name,
-                    type
-                  )
-              "
-            />
+          <div
+            v-if="
+              !!getEventsByEventName(item.name)
+            "
+            class="px-2 [&>*]:my-3"
+          >
+            <template
+              v-for="action in getEventsByEventName(
+                item.name
+              )"
+              :key="action.type"
+            >
+              <n-card
+                :title="`事件：${action.type}`"
+              >
+                <template
+                  v-if="
+                    action.type === 'goToLink'
+                  "
+                >
+                  <div>
+                    目标链接：{{ action.url }}
+                  </div>
+                </template>
+                <template
+                  v-if="
+                    action.type === 'showMessage'
+                  "
+                >
+                  <div>
+                    消息类型：{{
+                      action.config.type
+                    }}
+                  </div>
+                  <div>
+                    消息内容：{{
+                      action.config.text
+                    }}
+                  </div>
+                </template>
+                <template #header-extra>
+                  <n-tag type="error">
+                    删除
+                  </n-tag>
+                  &nbsp;
+                  <n-tag type="info">
+                    修改
+                  </n-tag>
+                </template>
+              </n-card>
+            </template>
           </div>
-          <template
-            v-if="
-              getSelectValue(item.name)?.type ===
-              'goToLink'
-            "
-          >
-            <go-to-link v-bind="item" />
+          <template #header-extra>
+            <n-button
+              type="primary"
+              @click="
+                () => {
+                  isShow = true
+                  curEventName = item.name
+                }
+              "
+              >添加事件</n-button
+            >
           </template>
-          <template
-            v-if="
-              getSelectValue(item.name)?.type ===
-              'showMessage'
-            "
-          >
-            <show-message v-bind="item" />
-          </template>
-          <div>{{  }}</div>
         </n-collapse-item>
       </template>
     </n-collapse>
+    <action-modal
+      :is-show="isShow"
+      :handle-show-modal="handleShowModal"
+      :handle-ok="handleAddAction"
+    />
   </div>
 </template>
 

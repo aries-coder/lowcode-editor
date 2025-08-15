@@ -11,7 +11,7 @@ import type { MessageApiInjection } from 'naive-ui/es/message/src/MessageProvide
 type MessageMethod = keyof MessageApiInjection
 
 export default defineComponent({
-  name: 'Previes',
+  name: 'preview',
   setup() {
     const componentsStore = useComponentsStore()
     const componentsConfigStore =
@@ -31,34 +31,35 @@ export default defineComponent({
     ) {
       const eventProps: Record<string, Function> =
         {}
+
       componentsConfig.value[
         component.name
       ].events?.forEach(event => {
-        const eventConfig =
-          component.props?.[event.name]?.()
+        const eventActions =
+          component.events?.[event.name]
 
-        if (!eventConfig) return
+        if (!eventActions) return
 
-        switch (eventConfig.type) {
-          case 'goToLink':
-            eventProps[event.name] = () => {
-              window.location.href =
-                eventConfig.url
-            }
-            break
-          case 'showMessage':
-            eventProps[event.name] = () => {
-              message[
-                eventConfig.config
-                  .type as MessageMethod
-              ](eventConfig.config.text)
-            }
-            break
-          default:
-            break
-        }
+        eventActions.forEach(action => {
+          switch (action.type) {
+            case 'goToLink':
+              eventProps[event.name] = () => {
+                window.location.href = action.url
+              }
+              break
+            case 'showMessage':
+              eventProps[event.name] = () => {
+                message[
+                  action.config
+                    .type as MessageMethod
+                ](action.config.text)
+              }
+              break
+            default:
+              break
+          }
+        })
       })
-      console.log(eventProps)
 
       return eventProps
     }

@@ -1,44 +1,22 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { type ComponentEvent } from '@/store/useComponentsConfigStore'
-import { useComponentsStore } from '@/store/useComponentsStore'
-import { storeToRefs } from 'pinia'
 import { NInput } from 'naive-ui'
 
-const { name: eventName } =
-  defineProps<ComponentEvent>()
-
-const componentsStore = useComponentsStore()
-const { currentComponentId, currentComponent } =
-  storeToRefs(componentsStore)
-
-const eventProps = computed(() =>
-  currentComponent.value?.props?.[eventName]?.()
-)
+const { onChange } = defineProps<{
+  onChange: (config: Record<string, any>) => void
+}>()
 
 function handelInputChange(url: string) {
-  const obj = {
-    ...eventProps.value,
-    url
-  }
-  componentsStore.updateComponentProps(
-    {
-      [eventName]: () => ({
-        ...obj
-      })
-    },
-    currentComponentId.value!
-  )
+  onChange({
+    url,
+    type: 'goToLink'
+  })
 }
 </script>
 
 <template>
   <div class="flex items-center px-2">
     <div class="min-w-[50px]">链接：</div>
-    <n-input
-      :value="eventProps?.url"
-      @input="handelInputChange"
-    />
+    <n-input @input="handelInputChange" />
   </div>
 </template>
 

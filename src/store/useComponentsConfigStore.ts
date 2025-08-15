@@ -19,6 +19,10 @@ export interface ComponentSetter {
   label: string
   [key: string]: unknown
 }
+export interface ComponentEvent {
+  label: string
+  name: string
+}
 export interface ComponentConfig {
   name: string
   defaultProps: Record<string, unknown>
@@ -27,6 +31,7 @@ export interface ComponentConfig {
   setters?: ComponentSetter[]
   stylesSetters?: ComponentSetter[]
   desc: string
+  events?: ComponentEvent[]
 }
 type ComponentsConfig = {
   [key: string]: ComponentConfig
@@ -95,6 +100,16 @@ export const useComponentsConfigStore =
               name: 'height',
               label: '高度',
               type: 'inputNumber'
+            }
+          ],
+          events: [
+            {
+              name: 'onClick',
+              label: '点击事件'
+            },
+            {
+              name: 'ondblclick',
+              label: '双击事件'
             }
           ]
         }

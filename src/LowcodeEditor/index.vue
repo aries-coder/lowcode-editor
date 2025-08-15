@@ -9,6 +9,8 @@ import Preview from './components/Preview/'
 import { emitter } from '@/utils'
 import { useComponentsStore } from '@/store/useComponentsStore'
 import { storeToRefs } from 'pinia'
+import { NMessageProvider } from 'naive-ui'
+
 const componentsStore = useComponentsStore()
 const { mode } = storeToRefs(componentsStore)
 
@@ -49,7 +51,9 @@ function handleSplipanesResized() {
       </Splitpanes>
     </template>
     <template v-else>
-      <Preview />
+      <n-message-provider>
+        <Preview />
+      </n-message-provider>
     </template>
   </div>
 </template>

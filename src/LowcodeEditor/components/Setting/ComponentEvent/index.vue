@@ -27,6 +27,8 @@ const { currentComponent, currentComponentId } =
 
 const isShow = ref<boolean>(false)
 const curEventName = ref<string>('')
+const curAction = ref<Record<string, any>>({})
+const curActionIndex = ref<number>()
 
 function getEventsByEventName(eventName: string) {
   return (
@@ -39,22 +41,71 @@ function handleShowModal(key: boolean) {
   isShow.value = key
 }
 
-function handleAddAction(
+function handleOkAction(
   action: Record<string, any>
 ) {
   handleShowModal(false)
 
+  if (curAction.value.type) {
+    console.log(action)
+    componentsStore.updateComponentEvents(
+      {
+        [curEventName.value]:
+          getEventsByEventName(
+            curEventName.value
+          ).map((eventAction, index) => {
+            if (index === curActionIndex.value) {
+              return action
+            }
+            return eventAction
+          })
+      },
+      currentComponentId.value!
+    )
+  } else {
+    componentsStore.updateComponentEvents(
+      {
+        [curEventName.value]: [
+          ...getEventsByEventName(
+            curEventName.value
+          ),
+          action
+        ]
+      },
+      currentComponentId.value!
+    )
+  }
+
+  curEventName.value = ''
+}
+
+function handleDelectAction(
+  eventName: string,
+  index: number
+) {
+  const curActions =
+    getEventsByEventName(eventName)
+  curActions.splice(index, 1)
+
   componentsStore.updateComponentEvents(
     {
-      [curEventName.value]: [
-        ...getEventsByEventName(
-          curEventName.value
-        ),
-        action
-      ]
+      [eventName]: [...curActions]
     },
     currentComponentId.value!
   )
+}
+
+function handleEditAction(
+  eventName: string,
+  index: number
+) {
+  curEventName.value = eventName
+  curActionIndex.value = index
+  const curActions =
+    getEventsByEventName(eventName)
+  curAction.value = curActions[index]
+
+  handleShowModal(true)
 }
 </script>
 
@@ -78,10 +129,12 @@ function handleAddAction(
             class="px-2 [&>*]:my-3"
           >
             <template
-              v-for="action in getEventsByEventName(
+              v-for="(
+                action, index
+              ) in getEventsByEventName(
                 item.name
               )"
-              :key="action.type"
+              :key="`${action.type}-${index}`"
             >
               <n-card
                 :title="`事件：${action.type}`"
@@ -112,11 +165,27 @@ function handleAddAction(
                   </div>
                 </template>
                 <template #header-extra>
-                  <n-tag type="error">
+                  <n-tag
+                    type="error"
+                    @click="
+                      handleDelectAction(
+                        item.name,
+                        index
+                      )
+                    "
+                  >
                     删除
                   </n-tag>
                   &nbsp;
-                  <n-tag type="info">
+                  <n-tag
+                    type="info"
+                    @click="
+                      handleEditAction(
+                        item.name,
+                        index
+                      )
+                    "
+                  >
                     修改
                   </n-tag>
                 </template>
@@ -128,6 +197,7 @@ function handleAddAction(
               type="primary"
               @click="
                 () => {
+                  curAction = {}
                   isShow = true
                   curEventName = item.name
                 }
@@ -140,8 +210,9 @@ function handleAddAction(
     </n-collapse>
     <action-modal
       :is-show="isShow"
+      :action="curAction"
       :handle-show-modal="handleShowModal"
-      :handle-ok="handleAddAction"
+      :handle-ok="handleOkAction"
     />
   </div>
 </template>

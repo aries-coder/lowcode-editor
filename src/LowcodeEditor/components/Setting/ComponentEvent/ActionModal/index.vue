@@ -4,10 +4,16 @@ import GoToLink from '../GoToLink/index.vue'
 import ShowMessage from '../ShowMessage/index.vue'
 import { ref } from 'vue'
 
-const { isShow, handleShowModal } = defineProps<{
+const {
+  isShow,
+  handleShowModal,
+  action,
+  handleOk
+} = defineProps<{
   isShow: boolean
   handleShowModal: (key: boolean) => void
   handleOk: (action: Record<string, any>) => void
+  action: Record<string, any>
 }>()
 
 const curConfig = ref<Record<string, any>>({})
@@ -32,14 +38,28 @@ function handleOnChange(
     @positive-click="handleOk(curConfig)"
     @negative-click="handleShowModal(false)"
   >
-    <n-tabs type="segment" animated>
-      <n-tab-pane name="chap1" tab="访问链接">
-        <go-to-link @change="handleOnChange" />
+    <n-tabs type="segment" animated :default-value="action.type || 'goToLink'">
+      <n-tab-pane name="goToLink" tab="访问链接">
+        <go-to-link
+          @change="handleOnChange"
+          :default-value="
+            action.type === 'goToLink' ?
+              action.url
+            : ''
+          "
+        />
       </n-tab-pane>
-      <n-tab-pane name="chap2" tab="消息提示">
-        <show-message @change="handleOnChange" />
+      <n-tab-pane name="showMessage" tab="消息提示">
+        <show-message
+          @change="handleOnChange"
+          :default-value="
+            action.type === 'showMessage' ?
+              action.config
+            : {}
+          "
+        />
       </n-tab-pane>
-      <n-tab-pane name="chap3" tab="自定义js">
+      <n-tab-pane name="customJS" tab="自定义js">
         1
       </n-tab-pane>
     </n-tabs>

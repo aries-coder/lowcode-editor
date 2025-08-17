@@ -9,11 +9,9 @@ interface Config {
 
 const { onChange } = defineProps<{
   onChange: (config: Record<string, any>) => void
+  defaultValue: Record<string, any>
 }>()
-const config = reactive<Config>({
-  type: 'success',
-  text: '91绿毛龟'
-})
+const config = reactive<Record<string, any>>({})
 
 function handleChangeAction() {
   onChange({
@@ -44,6 +42,7 @@ const selectOptions = [
       <div class="min-w-[50px]">类型：</div>
       <n-select
         :options="selectOptions"
+        :default-value="defaultValue.type"
         @update-value="
           (type: Config['type']) => {
             config.type = type
@@ -55,6 +54,7 @@ const selectOptions = [
     <div class="flex items-center px-2">
       <div class="min-w-[50px]">文本：</div>
       <n-input
+        :default-value="defaultValue.text"
         @input="
           (text: string) => {
             config.text = text

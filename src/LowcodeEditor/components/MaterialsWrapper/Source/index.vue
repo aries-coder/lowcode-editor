@@ -37,8 +37,6 @@ onMounted(async () => {
 watch(
   () => components.value,
   newVal => {
-    console.log(newVal)
-
     editorInstance.setValue(
       JSON.stringify(newVal, null, 2)
     )

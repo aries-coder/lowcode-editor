@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { NModal, NTabs, NTabPane } from 'naive-ui'
-import GoToLink from '../GoToLink/index.vue'
-import ShowMessage from '../ShowMessage/index.vue'
+import GoToLink from '../Actions/GoToLink/index.vue'
+import ShowMessage from '../Actions/ShowMessage/index.vue'
 import { ref } from 'vue'
+import CustomJS from '../Actions/CustomJS/index.vue'
 
 const {
   isShow,
@@ -38,7 +39,12 @@ function handleOnChange(
     @positive-click="handleOk(curConfig)"
     @negative-click="handleShowModal(false)"
   >
-    <n-tabs type="segment" animated :default-value="action.type || 'goToLink'">
+    <n-tabs
+      type="segment"
+      animated
+      :default-value="action.type || 'goToLink'"
+      class="h-[300px]"
+    >
       <n-tab-pane name="goToLink" tab="访问链接">
         <go-to-link
           @change="handleOnChange"
@@ -49,7 +55,10 @@ function handleOnChange(
           "
         />
       </n-tab-pane>
-      <n-tab-pane name="showMessage" tab="消息提示">
+      <n-tab-pane
+        name="showMessage"
+        tab="消息提示"
+      >
         <show-message
           @change="handleOnChange"
           :default-value="
@@ -60,7 +69,14 @@ function handleOnChange(
         />
       </n-tab-pane>
       <n-tab-pane name="customJS" tab="自定义js">
-        1
+        <CustomJS
+          :code="
+            action.type === 'customJS' ?
+              action.code
+            : ''
+          "
+          @change="handleOnChange"
+        />
       </n-tab-pane>
     </n-tabs>
   </n-modal>

@@ -37,8 +37,8 @@ const selectOptions = [
 </script>
 
 <template>
-  <div>
-    <div class="flex items-center px-2">
+  <div class="h-full flex flex-wrap items-center">
+    <div class="w-full flex items-center px-2">
       <div class="min-w-[50px]">类型：</div>
       <n-select
         :options="selectOptions"
@@ -51,7 +51,7 @@ const selectOptions = [
         "
       />
     </div>
-    <div class="flex items-center px-2">
+    <div class="flex items-center px-2 w-full">
       <div class="min-w-[50px]">文本：</div>
       <n-input
         :default-value="defaultValue.text"

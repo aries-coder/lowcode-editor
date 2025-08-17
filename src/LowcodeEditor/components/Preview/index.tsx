@@ -55,6 +55,22 @@ export default defineComponent({
                 ](action.config.text)
               }
               break
+            case 'customJS':
+              eventProps[event.name] = () => {
+                const script = new Function(
+                  'context',
+                  action.code
+                )
+
+                script({
+                  name: component.name,
+                  props: component.props,
+                  showMessage(content: string) {
+                    message.success(content)
+                  }
+                })
+              }
+              break
             default:
               break
           }

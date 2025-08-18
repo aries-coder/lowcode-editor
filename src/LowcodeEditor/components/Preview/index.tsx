@@ -4,7 +4,7 @@ import {
 } from '@/store/useComponentsStore'
 import { useComponentsConfigStore } from '@/store/useComponentsConfigStore'
 import { storeToRefs } from 'pinia'
-import { h, defineComponent } from 'vue'
+import { h, defineComponent, reactive } from 'vue'
 import { useMessage } from 'naive-ui'
 import type { MessageApiInjection } from 'naive-ui/es/message/src/MessageProvider'
 
@@ -25,6 +25,9 @@ export default defineComponent({
     )
 
     const message = useMessage()
+    const componentsRefs = reactive<
+      Record<string, any>
+    >({})
 
     function handleRenderEvent(
       component: Component
@@ -71,6 +74,13 @@ export default defineComponent({
                 })
               }
               break
+            case 'callMethods':
+              eventProps[event.name] = () => {
+                componentsRefs[
+                  action.config.componentId
+                ][action.config.method]()
+              }
+              break
             default:
               break
           }
@@ -105,6 +115,9 @@ export default defineComponent({
             id: component.id,
             name: component.name,
             styles: component.styles || {},
+            ref: (ref: Record<string, any>) => {
+              componentsRefs[component.id] = ref
+            },
             ...config.defaultProps,
             ...component.props,
             ...handleRenderEvent(component)

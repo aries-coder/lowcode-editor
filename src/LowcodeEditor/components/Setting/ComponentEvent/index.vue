@@ -8,12 +8,11 @@ import { useComponentsStore } from '@/store/useComponentsStore'
 import {
   NCollapse,
   NCollapseItem,
-  NButton,
-  NCard,
-  NTag
+  NButton
 } from 'naive-ui'
 import { storeToRefs } from 'pinia'
 import ActionModal from './ActionModal/index.vue'
+import ShowEventCard from './ShowEventCard/index.vue'
 import { ref } from 'vue'
 
 const componentsConfigStore =
@@ -136,60 +135,13 @@ function handleEditAction(
               )"
               :key="`${action.type}-${index}`"
             >
-              <n-card
-                :title="`事件：${action.type}`"
-              >
-                <template
-                  v-if="
-                    action.type === 'goToLink'
-                  "
-                >
-                  <div>
-                    目标链接：{{ action.url }}
-                  </div>
-                </template>
-                <template
-                  v-if="
-                    action.type === 'showMessage'
-                  "
-                >
-                  <div>
-                    消息类型：{{
-                      action.config.type
-                    }}
-                  </div>
-                  <div>
-                    消息内容：{{
-                      action.config.text
-                    }}
-                  </div>
-                </template>
-                <template #header-extra>
-                  <n-tag
-                    type="error"
-                    @click="
-                      handleDelectAction(
-                        item.name,
-                        index
-                      )
-                    "
-                  >
-                    删除
-                  </n-tag>
-                  &nbsp;
-                  <n-tag
-                    type="info"
-                    @click="
-                      handleEditAction(
-                        item.name,
-                        index
-                      )
-                    "
-                  >
-                    修改
-                  </n-tag>
-                </template>
-              </n-card>
+              <show-event-card
+                :action
+                :index
+                :event-name="item.name"
+                :handle-delect-action
+                :handle-edit-action
+              />
             </template>
           </div>
           <template #header-extra>

@@ -2,6 +2,7 @@
 import { NModal, NTabs, NTabPane } from 'naive-ui'
 import GoToLink from '../Actions/GoToLink/index.vue'
 import ShowMessage from '../Actions/ShowMessage/index.vue'
+import CallMethods from '../Actions/CallMethods/index.vue'
 import { ref } from 'vue'
 import CustomJS from '../Actions/CustomJS/index.vue'
 
@@ -31,13 +32,13 @@ function handleOnChange(
     :mask-closable="false"
     :show="isShow"
     preset="dialog"
-    content="你确认"
     title="事件配置动作"
     positive-text="确认"
     negative-text="算了"
     @close="handleShowModal(false)"
     @positive-click="handleOk(curConfig)"
     @negative-click="handleShowModal(false)"
+    class="!w-[600px]"
   >
     <n-tabs
       type="segment"
@@ -74,6 +75,19 @@ function handleOnChange(
             action.type === 'customJS' ?
               action.code
             : ''
+          "
+          @change="handleOnChange"
+        />
+      </n-tab-pane>
+      <n-tab-pane
+        name="componentMethods"
+        tab="调用组件方法"
+      >
+        <call-methods
+          :default-value="
+            action.type === 'callMethods' ?
+              action.config
+            : {}
           "
           @change="handleOnChange"
         />

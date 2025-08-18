@@ -8,7 +8,7 @@ const { id, styles } =
   defineProps<CommonComponentProps>()
 
 const { isHover, drop } = useMaterialDrop(
-  ['Button', 'Container'],
+  ['Button', 'Container', 'Modal'],
   id
 )
 </script>

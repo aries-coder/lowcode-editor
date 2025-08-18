@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { NSelect, NInput } from 'naive-ui'
+import { watch } from 'vue'
 import { reactive } from 'vue'
 
 interface Config {
@@ -7,18 +8,11 @@ interface Config {
   text: string
 }
 
-const { onChange } = defineProps<{
+const { onChange, defaultValue } = defineProps<{
   onChange: (config: Record<string, any>) => void
   defaultValue: Record<string, any>
 }>()
 const config = reactive<Record<string, any>>({})
-
-function handleChangeAction() {
-  onChange({
-    type: 'showMessage',
-    config
-  })
-}
 
 const selectOptions = [
   {
@@ -34,6 +28,13 @@ const selectOptions = [
     value: 'warning'
   }
 ]
+
+watch(config, newVal => {
+  onChange({
+    type: 'showMessage',
+    config: newVal
+  })
+})
 </script>
 
 <template>
@@ -44,10 +45,8 @@ const selectOptions = [
         :options="selectOptions"
         :default-value="defaultValue.type"
         @update-value="
-          (type: Config['type']) => {
-            config.type = type
-            handleChangeAction()
-          }
+          (type: Config['type']) =>
+            (config.type = type)
         "
       />
     </div>
@@ -56,10 +55,7 @@ const selectOptions = [
       <n-input
         :default-value="defaultValue.text"
         @input="
-          (text: string) => {
-            config.text = text
-            handleChangeAction()
-          }
+          (text: string) => (config.text = text)
         "
       />
     </div>

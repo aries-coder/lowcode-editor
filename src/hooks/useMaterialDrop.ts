@@ -14,25 +14,49 @@ export function useMaterialDrop(
   const { componentsConfig } = storeToRefs(
     componentsConfigStore
   )
+  const { components } = storeToRefs(
+    componentsStore
+  )
 
   const [collect, drop] = useDrop(() => ({
     accept,
-    drop: (item: { type: string }, monitor) => {
+    drop: (
+      item: {
+        type: string
+        dragType?: 'move' | 'copy'
+        id?: number
+      },
+      monitor
+    ) => {
       const didDrop = monitor.didDrop()
       if (didDrop) return
 
-      const config =
-        componentsConfig.value[item.type]
+      if (item.dragType === 'move') {
+        const component =
+          componentsStore.getComponenById(
+            item.id!,
+            components.value
+          )
 
-      componentsStore.addComponent(
-        {
-          id: Date.now(),
-          name: item.type,
-          props: config.defaultProps,
-          desc: config.desc
-        },
-        id
-      )
+        componentsStore.deleteComponent(item.id!)
+        componentsStore.addComponent(
+          component!,
+          id
+        )
+      } else {
+        const config =
+          componentsConfig.value[item.type]
+
+        componentsStore.addComponent(
+          {
+            id: Date.now(),
+            name: item.type,
+            props: config.defaultProps,
+            desc: config.desc
+          },
+          id
+        )
+      }
     },
     collect: monitor => ({
       isOver: monitor.isOver()

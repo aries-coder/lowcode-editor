@@ -9,11 +9,15 @@ import ContainerDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/
 import ButtonDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Button/ButtonDev.vue'
 import PageDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Page/PageDev.vue'
 import ModalDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Modal/ModalDev.vue'
+import TableDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Table/TableDev.vue'
+import TableColumnDev from '@/LowcodeEditor/components/MaterialsWrapper/Materials/TableColumn/TableColumnDev.vue'
 
 import ContainerPro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Container/ContainerPro.vue'
 import ButtonPro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Button/ButtonPro.vue'
 import PagePro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Page/PagePro.vue'
 import ModalPro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Modal/ModalPro.vue'
+import TablePro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/Table/TablePro.vue'
+import TableColumnPro from '@/LowcodeEditor/components/MaterialsWrapper/Materials/TableColumn/TableColumnPro.vue'
 
 export interface ComponentSetter {
   name: string
@@ -148,6 +152,59 @@ export const useComponentsConfigStore =
             {
               name: 'close',
               label: '关闭弹窗'
+            }
+          ]
+        },
+        Table: {
+          name: 'Table',
+          desc: '表格',
+          defaultProps: {
+            url: ''
+          },
+          dev: markRaw(TableDev),
+          pro: markRaw(TablePro),
+          setters: [
+            {
+              name: 'url',
+              label: 'url',
+              type: 'input'
+            }
+          ]
+        },
+        TableColumn: {
+          name: 'TableColumn',
+          desc: '表格列',
+          defaultProps: {
+            title: '列名',
+            dataIndex: `col_${Date.now()}`
+          },
+          dev: markRaw(TableColumnDev),
+          pro: markRaw(TableColumnPro),
+          setters: [
+            {
+              name: 'type',
+              label: '类型',
+              type: 'select',
+              options: [
+                {
+                  label: '文本',
+                  value: 'text'
+                },
+                {
+                  label: '时间',
+                  value: 'time'
+                }
+              ]
+            },
+            {
+              name: 'title',
+              label: '标题',
+              type: 'input'
+            },
+            {
+              name: 'dataIndex',
+              label: '字段',
+              type: 'input'
             }
           ]
         }

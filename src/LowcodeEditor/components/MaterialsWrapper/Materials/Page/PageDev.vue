@@ -6,7 +6,7 @@ import type { CommonComponentProps } from '@/LowcodeEditor/interface'
 const { id } = defineProps<CommonComponentProps>()
 
 const { isHover, drop } = useMaterialDrop(
-  ['Button', 'Container', 'Modal'],
+  ['Button', 'Container', 'Modal', 'Table'],
   id
 )
 </script>

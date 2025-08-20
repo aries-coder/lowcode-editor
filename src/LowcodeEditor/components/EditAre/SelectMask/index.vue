@@ -7,6 +7,7 @@ import { useComponentsStore } from '@/store/useComponentsStore'
 import { storeToRefs } from 'pinia'
 import {
   computed,
+  nextTick,
   onMounted,
   ref,
   watch
@@ -117,7 +118,9 @@ watch(
 watch(
   components.value,
   () => {
-    updatePosition()
+    nextTick(() => {
+      updatePosition()
+    })
   },
   {
     immediate: true,

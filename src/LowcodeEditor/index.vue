@@ -2,14 +2,17 @@
 import { Splitpanes, Pane } from 'splitpanes'
 import 'splitpanes/dist/splitpanes.css'
 import MaterialsWrapper from './components/MaterialsWrapper/index.vue'
-import EditAre from './components/EditAre'
+import EditAre from './components/EditAre/index.vue'
 import Setting from './components/Setting/index.vue'
 import EditorHeader from './components/Header/index.vue'
 import Preview from './components/Preview/'
 import { emitter } from '@/utils'
 import { useComponentsStore } from '@/store/useComponentsStore'
 import { storeToRefs } from 'pinia'
-import { NMessageProvider } from 'naive-ui'
+import {
+  NMessageProvider,
+  NConfigProvider
+} from 'naive-ui'
 
 const componentsStore = useComponentsStore()
 const { mode } = storeToRefs(componentsStore)
@@ -39,7 +42,9 @@ function handleSplipanesResized() {
           <MaterialsWrapper />
         </Pane>
         <Pane>
-          <EditAre />
+          <n-config-provider class="h-full">
+            <EditAre />
+          </n-config-provider>
         </Pane>
         <Pane
           min-size="25"
@@ -51,9 +56,11 @@ function handleSplipanesResized() {
       </Splitpanes>
     </template>
     <template v-else>
-      <n-message-provider>
-        <Preview />
-      </n-message-provider>
+      <n-config-provider class="h-full">
+        <n-message-provider>
+          <Preview />
+        </n-message-provider>
+      </n-config-provider>
     </template>
   </div>
 </template>
